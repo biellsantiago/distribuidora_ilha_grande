@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'layout.dart';
 
-final databaseReference = Firestore.instance;
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -13,18 +11,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Distribuidora Ilha Grande',
       theme: ThemeData(
-          primaryColor: Layout.primary(),
-          accentColor: Layout.secondary(),
-          textTheme: TextTheme(
-              headline: TextStyle(fontWeight: FontWeight.bold, fontSize: 48),
-              title: TextStyle(fontSize: 24, fontStyle: FontStyle.italic),
-              body1: TextStyle(fontSize: 14)),
-          buttonTheme: ButtonThemeData(
-            buttonColor: Layout.primary(),
-            textTheme: ButtonTextTheme.normal,
-            )
-          ),
-      home: MyHomePage(title: 'Distribuidora Ilha Grande 1')
+        primaryColor: Layout.primary(),
+        accentColor: Layout.secondary(),
+        textTheme: TextTheme(
+          headline: TextStyle(fontWeight: FontWeight.bold, fontSize: 48),
+          title: TextStyle(fontSize: 24, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14),
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Layout.primary(),
+          textTheme: ButtonTextTheme.normal,
+        ),
+      ),
+      home: MyHomePage(title: 'Distribuidora Ilha Grande 1'),
     );
   }
 }
@@ -41,37 +40,55 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    Widget content = StreamBuilder(
-      stream: Firestore.instance.collection('pedido').snapshots(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+    Widget content = FutureBuilder(
+      future: getData(),
+      builder: (BuildContext context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
         if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Text("Error: ${snapshot.error}");
         }
 
-          switch (snapshot.connectionState){
-            case ConnectionState.waiting:
-              return LinearProgressIndicator();
-              break;
-            default:
-              return Center(
-                child: ListView (
-                  children: snapshot.data.documents.map<Widget>((DocumentSnapshot doc) {
-                    return ListTile(
-                      leading: Icon(Icons.people, size: 52),
-                      title: Text("${doc.data['cliente_nome']}"),
-                      subtitle: Text("Valor total: ${doc.data['valor_total'].toString()}"),
-                      trailing: RaisedButton(
-                        onPressed: () {},
-                        child: Text('D', style: TextStyle(color: Layout.light())),
-                        ),
-                    );
-                  }).toList(),
-                ),
-              );
-          }
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Center(child: RefreshProgressIndicator());
         }
-      );
+
+        var result = ListView.builder(
+          itemCount: snapshot.data.length,
+          itemBuilder: (BuildContext context, int index) {
+            var item = snapshot.data[index];
+
+            return ListTile(
+              leading: Icon(Icons.people, size: 52),
+              title: Text("${item['nome']}"),
+              // title: Text(nome),
+              subtitle: Text("Valor total: ${item['valorTotal']}"),
+              trailing: RaisedButton(
+                onPressed: () {},
+                child: Text('Aperte-me', style: TextStyle(color: Layout.light())),
+              ),
+            );
+          },
+        );
+
+        return result;
+      },
+    );
     return Layout.render(content);
+  }
+
+  Future<List<Map<String, dynamic>>> getData() async {
+    var docs = await Firestore.instance.collection('pedido').getDocuments();
+    var result = <Map<String, dynamic>>[];
+
+    for (DocumentSnapshot doc in docs.documents) {
+      DocumentSnapshot client = await doc.data['cliente'].get();
+
+      result.add({
+        "nome": client.data['nome'],
+        "valorTotal": doc.data['valor_total'],
+      });
+    }
+
+    return result;
   }
 }
 
