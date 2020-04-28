@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "624159907191",
+    "firebase_url": "https://distribuidorailhagrande.firebaseio.com",
+    "project_id": "distribuidorailhagrande",
+    "storage_bucket": "distribuidorailhagrande.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624159907191:android:bfe3ede080b7c73b45d572",
+        "android_client_info": {
+          "package_name": "com.example.distribuidora_ilha_grande"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "624159907191-klmv7ve8lo9veqmp9fvc65p8tt3oielf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9NKr99UsYpK44HokOq33dUGJybr5Drl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "624159907191-klmv7ve8lo9veqmp9fvc65p8tt3oielf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
