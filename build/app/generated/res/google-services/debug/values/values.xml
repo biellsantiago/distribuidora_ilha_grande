@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">624159907191-klmv7ve8lo9veqmp9fvc65p8tt3oielf.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://distribuidorailhagrande.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">624159907191</string>
+    <string name="google_api_key" translatable="false">AIzaSyA9NKr99UsYpK44HokOq33dUGJybr5Drl4</string>
+    <string name="google_app_id" translatable="false">1:624159907191:android:bfe3ede080b7c73b45d572</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyA9NKr99UsYpK44HokOq33dUGJybr5Drl4</string>
+    <string name="google_storage_bucket" translatable="false">distribuidorailhagrande.appspot.com</string>
+    <string name="project_id" translatable="false">distribuidorailhagrande</string>
+</resources>
